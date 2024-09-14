@@ -261,7 +261,7 @@ export function MobileLandingPage() {
                 <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
                   <TextField style={{ width: '70%', height: '55px', marginRight: '10px' }} label="전화번호" variant="outlined" />
                 </InputMask>
-                <Button onClick={() => handleCsButtonClick(2)} style={{ width: '30%', height: '55px', fontSize: '18px' }} variant="contained">
+                <Button onClick={() => handleCsButtonClick(2)} style={{ width: '30%', height: '55px', fontSize: '16px' }} variant="contained">
                   상담신청
                 </Button>
               </CurriculumCsFormFields>
@@ -330,7 +330,7 @@ const Container = styled.div`
 
 const PageContainer = styled.div`
   width: 100%;
-  padding: 0 20px 60px;
+  padding: 0 30px 60px;
 `
 
 const FirstPageContent = styled.div`
