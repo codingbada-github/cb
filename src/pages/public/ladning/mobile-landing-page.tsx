@@ -1,0 +1,570 @@
+import { useToastClear } from '@hooks'
+
+import styled from '@emotion/styled'
+import Card from '@mui/material/Card'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { TextareaAutosize } from '@mui/base'
+import Marquee from 'react-marquee-slider'
+import InputMask from 'react-input-mask'
+
+import { Footer } from '@components'
+import { useNavigate } from 'react-router-dom'
+import { SetterOrUpdater, useSetRecoilState } from 'recoil'
+import { postInquiryResponse, RequestApi } from '@api'
+import { errorToastMessageState, isErrorToastOpenState, postInquiryResponseState } from '@store'
+import { useState } from 'react'
+
+const reviewList1 = [
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+]
+
+const CONTENT_MAX_LENGTH: number = 1000
+
+export function MobileLandingPage() {
+  useToastClear()
+  const navigate = useNavigate()
+  const setIsErrorToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isErrorToastOpenState)
+  const setErrorToastMessage: SetterOrUpdater<string> = useSetRecoilState(errorToastMessageState)
+  const setPostInquiryResponse: SetterOrUpdater<postInquiryResponse> = useSetRecoilState(postInquiryResponseState)
+
+  const [phoneNumber, setPhoneNumber]: [string, Function] = useState('')
+  const [content, setContent]: [string, Function] = useState('')
+
+  const handlePhoneNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(event.target.value)
+  }
+  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (event.target.value.length <= CONTENT_MAX_LENGTH) {
+      setContent(event.target.value)
+    }
+  }
+
+  const handleCsButtonClick = (type: number = 1) => {
+    if (phoneNumber.length !== 13) {
+      setIsErrorToastOpen(true)
+      setErrorToastMessage('올바른 전화번호를 입력해 주세요!')
+      return
+    }
+
+    ;(async () => {
+      try {
+        const response = await RequestApi.inquiry.postInquiry({
+          phone_number: phoneNumber,
+          content: type === 1 ? (content ? content : '무료 상담신청') : '커리큘럼 상담신청',
+        })
+
+        setPostInquiryResponse(response)
+        setPhoneNumber('')
+        setContent('')
+
+        navigate('/inquiry-received')
+      } catch (error: any) {
+        setIsErrorToastOpen(true)
+        setErrorToastMessage('죄송합니다. 잠시 후 다시 시도해 주세요.')
+      }
+    })()
+  }
+
+  return (
+    <Container>
+      <PageContainer>
+        <FirstPageContent>
+          <FirstPageTypo>
+            <FirstPageTypo1>코딩바다</FirstPageTypo1>
+            <FirstPageTypo2Section>
+              <FirstPageTypo2>우리 아이의 미래를 위한,</FirstPageTypo2>
+              <FirstPageTypo2>코딩 교육의 시작.</FirstPageTypo2>
+            </FirstPageTypo2Section>
+            <FirstPageTypo3>2025년 코딩 의무 교육,</FirstPageTypo3>
+            <FirstPageTypo3>이미 시작된 S/W, AI 시대,</FirstPageTypo3>
+            <FirstPageTypo3>더 이상 선택이 아니라 필수인 코딩 교육!</FirstPageTypo3>
+            <FirstPageTypo3>지금 당장 시작하셔야 합니다.</FirstPageTypo3>
+          </FirstPageTypo>
+
+          <FirstPageCsForm>
+            <CsForm>
+              <CsFormTitle>✅ 무료로 상담을 받아보세요!</CsFormTitle>
+
+              <CsFormField>
+                <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
+                  <CsFormTextField type="tel" label="전화번호" variant="outlined" />
+                </InputMask>
+
+                <TextArea
+                  value={content}
+                  onChange={handleContentChange}
+                  style={{ marginTop: '20px', height: '70%' }}
+                  placeholder="자녀의 나이 코딩, 코딩 경험 유무 등을 남겨주시면, 친절하고 상세하게 도와드리겠습니다."
+                />
+              </CsFormField>
+
+              <Button onClick={() => handleCsButtonClick()} style={{ height: '50px', fontSize: '20px' }} variant="contained">
+                상담신청
+              </Button>
+            </CsForm>
+          </FirstPageCsForm>
+        </FirstPageContent>
+      </PageContainer>
+
+      <PageContainer style={{ backgroundColor: '#e6f4fa' }}>
+        <PageContent style={{ padding: '50px 0' }}>
+          <SecondPageTitle>코딩바다는,</SecondPageTitle>
+          <SecondPageTitle>교육의 힘을 믿습니다.</SecondPageTitle>
+
+          <div style={{ paddingTop: '30px', width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <ContentCard>
+              <div style={{ paddingBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>1. 잘 아는 것과, 잘 가르치는 것</div>
+
+              <div>대다수의 부모님들이 누가, 어떻게 커리큘럼을 만들었는지도 모른 채,</div>
+              <div>소중한 시간과 돈을 들여 우리 아이들을 맡기고 있습니다.</div>
+              <br />
+              <div>저희 코딩바다는 이러한 부모님들의 신뢰를 저버리지 않겠습니다.</div>
+              <div>국내 유수의 대기업 및 IT 업계 출신의 전문가들이 만든 커리큘럼을 믿어보세요.</div>
+              <br />
+              <div>비단, 공인된 커리큘럼뿐만이 아닙니다.</div>
+              <div>잘 아는 것과, 잘 가르치는 것은 다릅니다.</div>
+              <br />
+              <div>아무리 천재적인 석학일지라도, 최고의 지식과 경험을 갖추고 있을지라도,</div>
+              <div>누군가를 가르치고 알려주는 교육의 역량은 전혀 다른 문제입니다.</div>
+              <br />
+              <div>저희 코딩바다는 교육의 자세와 태도가 갖추어진 IT 전공 강사를 양성하고,</div>
+              <div>소중한 자녀 분에게 적합한 1:1 강사를 매칭해 드리겠습니다.</div>
+            </ContentCard>
+
+            <ContentCard>
+              <div style={{ paddingBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>2. 교육이 시간과 장소에 구애받지 않도록</div>
+
+              <div>교육이 필요한 누구나 쉽게 접근할 수 있도록,</div>
+              <div>코딩바다는 100% 온라인 교육을 지향합니다.</div>
+              <br />
+              <div>코로나를 거치며, 원격 교육이 활성화된 요새 트렌드에 맞추어,</div>
+              <div>노트북과 컴퓨터만 있다면 언제 어디서나 교육이 가능합니다.</div>
+              <br />
+              <div style={{ color: 'var(--gray-color)' }}>※ 데스크톱의 경우 원활한 의사소통을 위해 웹캠 및 스피커가 있어야 합니다.</div>
+              <div style={{ color: 'var(--gray-color)' }}>※ 오프라인 수업은 최대한 지양하고 있지만, 상담을 통해 협의 가능합니다.</div>
+            </ContentCard>
+          </div>
+
+          <div style={{ height: '180px', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ paddingBottom: '30px', fontWeight: 'bold', fontSize: '20px' }}>
+              <u>코딩바다 대표 강사진 출신 회사</u>
+            </div>
+            <LogoSection>
+              <LogoDiv>
+                <Logo src={'./assets/landing/cj-logo.svg'} alt="cj" />
+              </LogoDiv>
+              <LogoDiv>
+                <Logo src={'./assets/landing/daangn-logo.svg'} alt="daangn" />
+              </LogoDiv>
+              <LogoDiv>
+                <Logo src={'./assets/landing/hyundai-logo.svg'} alt="hyundai" />
+              </LogoDiv>
+            </LogoSection>
+
+            <LogoSection style={{ width: '74%', justifyContent: 'space-around' }}>
+              <LogoDiv>
+                <Logo src={'./assets/landing/gs-logo.svg'} alt="gs" />
+              </LogoDiv>
+              <LogoDiv>
+                <Logo src={'./assets/landing/socar-logo.svg'} alt="socar" />
+              </LogoDiv>
+            </LogoSection>
+          </div>
+        </PageContent>
+      </PageContainer>
+
+      <PageContainer>
+        <PageContent style={{ padding: '60px 0 0 0' }}>
+          <ThirdPageTitle>검증된 커리큘럼</ThirdPageTitle>
+          <div style={{ color: 'var(--gray-color)', fontSize: '18px' }}>Scratch? Python? Java?</div>
+          <div style={{ color: 'var(--gray-color)', fontSize: '18px' }}>알고리즘? AI? 뭐가 뭐야?!</div>
+          <div style={{ color: 'var(--gray-color)', fontSize: '18px' }}>약은 약사에게! 코딩 교육은 코딩바다에게!</div>
+          <div style={{ paddingBottom: '50px', color: 'var(--gray-color)', fontSize: '18px' }}>그저 믿고 맏겨만 주세요.</div>
+
+          <CurriculumSection>
+            <CurriculumDiv>
+              <CurriculumTitle>
+                <CurriculumTitleHighlight titleHighlightColor={'#ffcccc'}>초등부</CurriculumTitleHighlight>
+              </CurriculumTitle>
+
+              <CurriculumDescription>
+                <div>초등부는 무엇보다 아이들의 흥미가 중요합니다.</div>
+                <div>어렵고 복잡한 프로그래밍 언어가 아닌,</div>
+                <div>블록을 옮기며 쉽게 코딩하는 Scratch를 활용하게 됩니다.</div>
+                <br />
+                <div>비단, 단순히 재미만을 추구하는 것이 아닌,</div>
+                <div>이 시기에 가장 중요한 창의력과 사고력을 증진시키기 위해</div>
+                <div>자체적으로 제작한 과제를 해결해 가며,</div>
+                <div>자녀분들이 스스로 사고할 수 있는 힘을 기르게 됩니다.</div>
+              </CurriculumDescription>
+
+              <CurriculumPrice>120,000₩</CurriculumPrice>
+            </CurriculumDiv>
+            <CurriculumDiv>
+              <CurriculumTitle>
+                <CurriculumTitleHighlight titleHighlightColor={'#ccffcc'}>중등부</CurriculumTitleHighlight>
+              </CurriculumTitle>
+
+              <CurriculumDescription>
+                <div>중등부는 아이들의 잠재력이 만개하는 시기입니다.</div>
+                <div>이 시기에 학습을 통해 발달된 사고력이 평생을 가게 되며,</div>
+                <div>앞으로의 문제 해결 능력을 좌지우지하게 됩니다.</div>
+                <br />
+                <div>따라서, 자녀분들의 논리력과 수학적 사고력을 함양시키는</div>
+                <div>교육자료들로 커리큘럼이 구성되어 있습니다. </div>
+                <div>또한, 요새 화두로 떠오르는 AI / 인공지능의 기반 스킬인</div>
+                <div>Python을 배우고 활용할 줄 알게 됩니다.</div>
+              </CurriculumDescription>
+
+              <CurriculumPrice>140,000₩</CurriculumPrice>
+            </CurriculumDiv>
+            <CurriculumDiv>
+              <CurriculumTitle>
+                <CurriculumTitleHighlight titleHighlightColor={'#ccccff'}>고등부</CurriculumTitleHighlight>
+              </CurriculumTitle>
+
+              <CurriculumDescription>
+                <div>고등부는 곧 대학 입시를 앞둔 중요한 시기입니다.</div>
+                <div>이 시기에는 인생의 진로를 찾고 결정하는 것이,</div>
+                <div>최우선 순위이며 인생에서 가장 큰 선택이 될 것입니다.</div>
+                <br />
+                <div>고등부 수업은 IT 관련 학과 지망 학생들의 경우,</div>
+                <div>코딩이 적성에 맞는지 미리 경험해 보는 발판이 될 것이고,</div>
+                <div>문과 및 예체능 계열 학생들의 경우,</div>
+                <div>앞으로 대학, 회사에서 기본으로 갖추어야 할 코딩 능력을 기르게 됩니다.</div>
+              </CurriculumDescription>
+
+              <CurriculumPrice>160,000₩</CurriculumPrice>
+            </CurriculumDiv>
+          </CurriculumSection>
+
+          <CurriculumCsSection>
+            <CurriculumCsForm>
+              <CurriculumCsFormDescription>☎️ 간단하게 연락처로 상담부터 받아보세요!</CurriculumCsFormDescription>
+              <CurriculumCsFormFields>
+                <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
+                  <TextField style={{ width: '70%', height: '55px', marginRight: '10px' }} label="전화번호" variant="outlined" />
+                </InputMask>
+                <Button onClick={() => handleCsButtonClick(2)} style={{ width: '30%', height: '55px', fontSize: '18px' }} variant="contained">
+                  상담신청
+                </Button>
+              </CurriculumCsFormFields>
+            </CurriculumCsForm>
+          </CurriculumCsSection>
+        </PageContent>
+      </PageContainer>
+
+      <PageContainer style={{ backgroundColor: '#e6f4fa' }}>
+        <PageContent style={{ padding: '60px 0 0 0' }}>
+          <ReviewPageTitle>소중한 부모님들의 후기</ReviewPageTitle>
+
+          <ReviewSection>
+            <ReviewTitle>초등부</ReviewTitle>
+            <Marquee direction="rtl" velocity={10} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList1.map((item: any, index: number) => {
+                return (
+                  <ReviewListItem key={`review1-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </ReviewListItem>
+                )
+              })}
+            </Marquee>
+          </ReviewSection>
+
+          <ReviewSection>
+            <ReviewTitle>중등부</ReviewTitle>
+            <Marquee direction="ltr" velocity={10} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList1.map((item: any, index: number) => {
+                return (
+                  <ReviewListItem key={`review2-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </ReviewListItem>
+                )
+              })}
+            </Marquee>
+          </ReviewSection>
+
+          <ReviewSection>
+            <ReviewTitle>고등부</ReviewTitle>
+            <Marquee direction="rtl" velocity={10} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList1.map((item: any, index: number) => {
+                return (
+                  <ReviewListItem key={`review3-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </ReviewListItem>
+                )
+              })}
+            </Marquee>
+          </ReviewSection>
+        </PageContent>
+      </PageContainer>
+
+      <Footer />
+    </Container>
+  )
+}
+
+const Container = styled.div`
+  padding-top: 80px; // header height
+  width: 100%;
+`
+
+const PageContainer = styled.div`
+  width: 100%;
+  padding: 0 20px 60px;
+`
+
+const FirstPageContent = styled.div`
+  width: 100%;
+  justify-content: space-between;
+`
+
+const FirstPageTypo = styled.div`
+  margin-bottom: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+const FirstPageTypo1 = styled.div`
+  color: var(--main-color);
+  font-weight: bold;
+  font-size: 70px;
+  margin-bottom: 10px;
+`
+const FirstPageTypo2Section = styled.div`
+  margin-bottom: 20px;
+`
+
+const FirstPageTypo2 = styled.div`
+  font-weight: bold;
+  font-size: 30px;
+`
+const FirstPageTypo3 = styled.div`
+  color: var(--gray-color);
+  font-size: 18px;
+  margin-bottom: 5px;
+`
+
+const FirstPageCsForm = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const CsForm = styled(Card)`
+  padding: 30px 15px;
+  width: 100%;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+`
+const CsFormTitle = styled.div`
+  height: 40px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.23);
+  font-size: 18px;
+  font-weight: bold;
+`
+
+const CsFormField = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const CsFormTextField = styled(TextField)`
+  margin-top: 20px;
+`
+
+const TextArea = styled(TextareaAutosize)`
+  margin-bottom: 20px;
+  resize: none;
+
+  padding: 16.5px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border: 2px solid var(--main-color);
+    outline: none;
+  }
+
+  &:hover:not(:focus) {
+    border-color: #212021;
+  }
+
+  ::placeholder {
+    color: gray;
+  }
+`
+
+const PageContent = styled.div`
+  width: 100%;
+`
+
+const SecondPageTitle = styled.div`
+  font-size: 33px;
+  font-weight: bold;
+`
+
+const ContentCard = styled.div`
+  margin-bottom: 40px;
+  padding: 24px 20px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 4px;
+`
+
+const LogoSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const LogoDiv = styled.div`
+  background-color: white;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Logo = styled.img`
+  width: 70px;
+  height: 70px;
+`
+
+const ThirdPageTitle = styled.div`
+  padding-bottom: 10px;
+  font-size: 33px;
+  font-weight: bold;
+`
+const CurriculumSection = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 60%;
+`
+
+const CurriculumDiv = styled.div`
+  width: 100%;
+`
+
+const CurriculumTitle = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  padding-bottom: 20px;
+`
+
+interface CurriculumTitleHighlightProps {
+  titleHighlightColor?: string
+}
+const CurriculumTitleHighlight = styled.span<CurriculumTitleHighlightProps>`
+  font-weight: bold;
+  display: inline;
+
+  box-shadow: ${(props) => `inset 0 -1.2rem 0 ${props.titleHighlightColor}` || 'none'};
+`
+
+const CurriculumDescription = styled.div`
+  padding-bottom: 30px;
+`
+
+const CurriculumPrice = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: var(--gray-color);
+  font-size: 20px;
+  font-weight: bold;
+`
+const CurriculumCsSection = styled.div`
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const CurriculumCsForm = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+const CurriculumCsFormDescription = styled.div`
+  font-weight: bold;
+  font-size: 18px;
+  padding-bottom: 20px;
+`
+const CurriculumCsFormFields = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`
+
+const ReviewPageTitle = styled.div`
+  padding-bottom: 10px;
+  font-size: 33px;
+  font-weight: bold;
+`
+const ReviewSection = styled.div`
+  margin-top: 20px;
+  height: 200px;
+`
+const ReviewTitle = styled.div`
+  height: 40px;
+
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+`
+
+const ReviewListItem = styled(Card)`
+  padding: 15px;
+  height: 160px;
+  width: 300px;
+  margin-right: 30px;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+const ReviewListItemDescription = styled.div``
+const ReviewListItemName = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--gray-color);
+`
