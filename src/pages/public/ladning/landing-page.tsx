@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/react'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -17,6 +18,47 @@ import { RequestApi, postInquiryResponse } from '@api'
 import { useNavigate } from 'react-router-dom'
 
 const reviewList1 = [
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+  {
+    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    name: '- 초등부 5학년 정OO 어머님',
+  },
+]
+
+const reviewList2 = [
+  {
+    description:
+      '"그동안 아이에게 좋은 스승이 되어 주셔서 너무 감사합니다. 그만하게 되어 아이가 많이 섭섭해하네요. 앞날에 좋은 일만 있었으면 좋겠고 진심으로 감사드립니다."',
+    name: '- 중등부 3학년 신OO 어머님',
+  },
+  {
+    description: '"지난 1년 동안 수업하느라 고생하셨습니다. 정말 고마워요 기프티콘은 감사의 표시에요. ^^"',
+    name: '- 중등부 1학년 김OO 아버님',
+  },
+  {
+    description:
+      '"그동안 아이에게 좋은 스승이 되어 주셔서 너무 감사합니다. 그만하게 되어 아이가 많이 섭섭해하네요. 앞날에 좋은 일만 있었으면 좋겠고 진심으로 감사드립니다."',
+    name: '- 중등부 3학년 신OO 어머님',
+  },
+  {
+    description:
+      '"그동안 아이에게 좋은 스승이 되어 주셔서 너무 감사합니다. 그만하게 되어 아이가 많이 섭섭해하네요. 앞날에 좋은 일만 있었으면 좋겠고 진심으로 감사드립니다."',
+    name: '- 중등부 3학년 신OO 어머님',
+  },
+]
+
+const reviewList3 = [
   {
     description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
     name: '- 초등부 5학년 정OO 어머님',
@@ -209,7 +251,11 @@ export function LandingPage() {
                 <div>자녀분들이 스스로 사고할 수 있는 힘을 기르게 됩니다.</div>
               </CurriculumDescription>
 
-              <CurriculumPrice>160,000₩</CurriculumPrice>
+              <CurriculumPriceDiscountSection>
+                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumOriginPrice>160,000₩</CurriculumOriginPrice>
+              </CurriculumPriceDiscountSection>
+              <CurriculumPrice>120,000₩</CurriculumPrice>
             </CurriculumDiv>
             <CurriculumDiv>
               <CurriculumTitle>
@@ -227,7 +273,11 @@ export function LandingPage() {
                 <div>Python을 배우고 활용할 줄 알게 됩니다.</div>
               </CurriculumDescription>
 
-              <CurriculumPrice>180,000₩</CurriculumPrice>
+              <CurriculumPriceDiscountSection>
+                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumOriginPrice>180,000₩</CurriculumOriginPrice>
+              </CurriculumPriceDiscountSection>
+              <CurriculumPrice>140,000₩</CurriculumPrice>
             </CurriculumDiv>
             <CurriculumDiv>
               <CurriculumTitle>
@@ -245,7 +295,11 @@ export function LandingPage() {
                 <div>앞으로 대학, 회사에서 기본으로 갖추어야 할 코딩 능력을 기르게 됩니다.</div>
               </CurriculumDescription>
 
-              <CurriculumPrice>200,000₩</CurriculumPrice>
+              <CurriculumPriceDiscountSection>
+                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumOriginPrice>200,000₩</CurriculumOriginPrice>
+              </CurriculumPriceDiscountSection>
+              <CurriculumPrice>160,000₩</CurriculumPrice>
             </CurriculumDiv>
           </CurriculumSection>
 
@@ -286,7 +340,7 @@ export function LandingPage() {
           <ReviewSection>
             <ReviewTitle>중등부</ReviewTitle>
             <Marquee direction="ltr" velocity={15} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
-              {reviewList1.map((item: any, index: number) => {
+              {reviewList2.map((item: any, index: number) => {
                 return (
                   <ReviewListItem key={`review2-${index}`}>
                     <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
@@ -300,7 +354,7 @@ export function LandingPage() {
           <ReviewSection>
             <ReviewTitle>고등부</ReviewTitle>
             <Marquee direction="rtl" velocity={15} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
-              {reviewList1.map((item: any, index: number) => {
+              {reviewList3.map((item: any, index: number) => {
                 return (
                   <ReviewListItem key={`review3-${index}`}>
                     <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
@@ -495,13 +549,52 @@ const CurriculumTitleHighlight = styled.span<CurriculumTitleHighlightProps>`
 
 const CurriculumDescription = styled.div`
   padding-bottom: 50px;
+  height: 200px;
 `
 
-const CurriculumPrice = styled.div`
+const CurriculumPriceDiscountSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`
+
+const shimmer = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`
+const CurriculumPriceDiscountBadge = styled.div`
+  margin-right: 10px;
+  display: inline-block;
+  padding: 7px 15px;
+  border-radius: 20px;
+  background: linear-gradient(to right, rgb(175, 44, 255), rgb(255, 44, 150), rgb(255, 154, 45));
+  background-size: 300% 300%;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  animation: ${shimmer} 3s ease-in-out infinite;
+`
+const CurriculumOriginPrice = styled.div`
   display: flex;
   justify-content: flex-end;
   color: var(--gray-color);
   font-size: 20px;
+  font-weight: bold;
+  text-decoration: line-through;
+`
+const CurriculumPrice = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: red;
+  font-size: 25px;
   font-weight: bold;
 `
 const CurriculumCsSection = styled.div`
