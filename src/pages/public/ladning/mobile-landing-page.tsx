@@ -296,7 +296,7 @@ export function MobileLandingPage() {
               <CurriculumCsFormDescription>☎️ 간단하게 연락처로 상담부터 받아보세요!</CurriculumCsFormDescription>
               <CurriculumCsFormFields>
                 <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
-                  <TextField style={{ width: '70%', height: '55px', marginRight: '10px' }} label="전화번호" variant="outlined" />
+                  <TextField style={{ width: '70%', height: '55px', marginRight: '10px' }} type="tel" label="전화번호" variant="outlined" />
                 </InputMask>
                 <Button onClick={() => handleCsButtonClick(2)} style={{ width: '30%', height: '55px', fontSize: '16px' }} variant="contained">
                   상담신청
