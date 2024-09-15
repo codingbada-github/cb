@@ -3,9 +3,12 @@ import { InquiryReceivedPage, LandingPage, MobileLandingPage } from '@pages'
 import { Route, Routes } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { isMobileState } from '@store'
+import { PageviewTracker } from '@utils'
 
 export function PublicRoute() {
   const isMobile: boolean = useRecoilValue(isMobileState)
+  // GA pageview tracker
+  PageviewTracker()
 
   return (
     <Routes>
