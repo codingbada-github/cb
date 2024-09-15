@@ -321,11 +321,36 @@ export function MobileLandingPage() {
         </PageContent>
       </PageContainer>
 
-      <PageContainer style={{ backgroundColor: '#e6f4fa' }}>
+      <ReviewPageContainer style={{ backgroundColor: '#e6f4fa' }}>
         <PageContent style={{ padding: '60px 0 0 0' }}>
           <ReviewPageTitle>소중한 부모님들의 후기</ReviewPageTitle>
 
-          <ReviewSection>
+          <TempReviewSection>
+            <Marquee direction="ltr" velocity={7} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList2.map((item: any, index: number) => {
+                return (
+                  <TempReviewListItem key={`review2-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </TempReviewListItem>
+                )
+              })}
+            </Marquee>
+          </TempReviewSection>
+
+          <TempReviewSection>
+            <Marquee direction="rtl" velocity={7} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList3.map((item: any, index: number) => {
+                return (
+                  <TempReviewListItem key={`review3-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </TempReviewListItem>
+                )
+              })}
+            </Marquee>
+          </TempReviewSection>
+          {/* <ReviewSection>
             <ReviewTitle>초등부</ReviewTitle>
             <Marquee direction="rtl" velocity={10} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
               {reviewList1.map((item: any, index: number) => {
@@ -365,9 +390,9 @@ export function MobileLandingPage() {
                 )
               })}
             </Marquee>
-          </ReviewSection>
+          </ReviewSection> */}
         </PageContent>
-      </PageContainer>
+      </ReviewPageContainer>
 
       <Footer />
     </Container>
@@ -622,8 +647,30 @@ const CurriculumCsFormFields = styled.div`
   align-items: center;
 `
 
+const ReviewPageContainer = styled.div`
+  width: 100%;
+  padding: 0 30px;
+`
+
+const TempReviewSection = styled.div`
+  height: 230px;
+
+  /* background-color: greenyellow; */
+`
+const TempReviewListItem = styled(Card)`
+  padding: 15px;
+  height: 170px;
+  width: 300px;
+  margin-right: 30px;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
 const ReviewPageTitle = styled.div`
-  padding-bottom: 10px;
+  padding-bottom: 40px;
   font-size: 33px;
   font-weight: bold;
 `

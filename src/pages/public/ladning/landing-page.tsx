@@ -19,20 +19,20 @@ import { useNavigate } from 'react-router-dom'
 
 const reviewList1 = [
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
+    description: '""',
+    name: '- 초등부 4학년 정OO 어머님',
+  },
+  {
+    description: '""',
     name: '- 초등부 5학년 정OO 어머님',
   },
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '""',
+    name: '- 초등부 6학년 정OO 어머님',
   },
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
-  },
-  {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '""',
+    name: '- 초등부 6학년 정OO 어머님',
   },
 ]
 
@@ -60,20 +60,20 @@ const reviewList2 = [
 
 const reviewList3 = [
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '"afdsfd"',
+    name: '- 고등부 2학년 서OO',
   },
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '""',
+    name: '- 고등부 3학년 박OO',
   },
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '""',
+    name: '- 고등부 1학년 민OO',
   },
   {
-    description: '"좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요.좋았어요."',
-    name: '- 초등부 5학년 정OO 어머님',
+    description: '""',
+    name: '- 고등부 3학년 신OO',
   },
 ]
 
@@ -319,11 +319,37 @@ export function LandingPage() {
         </PageContent>
       </PageContainer>
 
-      <PageContainer style={{ backgroundColor: '#e6f4fa' }}>
+      <ReviewPageContainer style={{ backgroundColor: '#e6f4fa' }}>
         <PageContent style={{ padding: '60px 0' }}>
-          <PageTitle>소중한 부모님들의 후기</PageTitle>
+          <ReviewPageTitle>소중한 부모님들의 후기</ReviewPageTitle>
 
-          <ReviewSection>
+          <TempReviewSection>
+            <Marquee direction="ltr" velocity={15} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList2.map((item: any, index: number) => {
+                return (
+                  <TempReviewListItem key={`review2-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </TempReviewListItem>
+                )
+              })}
+            </Marquee>
+          </TempReviewSection>
+
+          <TempReviewSection>
+            <Marquee direction="rtl" velocity={15} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
+              {reviewList3.map((item: any, index: number) => {
+                return (
+                  <TempReviewListItem key={`review3-${index}`}>
+                    <ReviewListItemDescription>{item.description}</ReviewListItemDescription>
+                    <ReviewListItemName>{item.name}</ReviewListItemName>
+                  </TempReviewListItem>
+                )
+              })}
+            </Marquee>
+          </TempReviewSection>
+
+          {/* <ReviewSection>
             <ReviewTitle>초등부</ReviewTitle>
             <Marquee direction="rtl" velocity={15} scatterRandomly={false} onFinish={() => {}} resetAfterTries={200} onInit={() => {}}>
               {reviewList1.map((item: any, index: number) => {
@@ -363,9 +389,9 @@ export function LandingPage() {
                 )
               })}
             </Marquee>
-          </ReviewSection>
+          </ReviewSection> */}
         </PageContent>
-      </PageContainer>
+      </ReviewPageContainer>
 
       <Footer />
     </Container>
@@ -616,6 +642,36 @@ const CurriculumCsFormDescription = styled.div`
 const CurriculumCsFormFields = styled.div`
   display: flex;
   align-items: center;
+`
+
+const ReviewPageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 800px;
+`
+const ReviewPageTitle = styled.div`
+  padding-bottom: 50px;
+  font-size: 50px;
+  font-weight: bold;
+`
+const TempReviewSection = styled.div`
+  padding-top: 30px;
+  height: 290px;
+
+  /* background-color: greenyellow; */
+`
+const TempReviewListItem = styled(Card)`
+  padding: 15px;
+  height: 200px;
+  width: 350px;
+  margin-right: 30px;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const ReviewSection = styled.div`
