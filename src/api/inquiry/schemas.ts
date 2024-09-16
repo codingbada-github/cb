@@ -1,9 +1,9 @@
-export interface postInquiryRequest {
+export interface PostInquiryRequest {
   phone_number: string
   content: string
 }
 
-export interface postInquiryResponse {
+export interface PostInquiryResponse {
   public_id: string
   phone_number: string
   content: string

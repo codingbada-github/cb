@@ -10,9 +10,9 @@ export function Footer() {
         <div>호스팅 사업자 : Amazon Web Services (AWS)</div>
 
         <Icons>
-          <Icon src={'./assets/landing/instagram-icon.svg'} alt="instagram-icon" />
-          <Icon src={'./assets/landing/naver-blog-icon.svg'} alt="naver-blog-icon" />
-          <Icon src={'./assets/landing/tistory-icon.svg'} alt="tistory-icon" />
+          <Icon src={'/assets/landing/instagram-icon.svg'} alt="instagram-icon" />
+          <Icon src={'/assets/landing/naver-blog-icon.svg'} alt="naver-blog-icon" />
+          <Icon src={'/assets/landing/tistory-icon.svg'} alt="tistory-icon" />
         </Icons>
       </Content>
     </Container>

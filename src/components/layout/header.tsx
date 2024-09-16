@@ -42,7 +42,7 @@ export function Header({ children }: HeaderProps) {
         <MobileHeaderContainer>
           <MobileHeaderContent>
             <MobileMainLogo onClick={() => handleScroll(0)}>
-              <MobileIcon src={'./assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
+              <MobileIcon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
               코딩바다
             </MobileMainLogo>
           </MobileHeaderContent>
@@ -57,7 +57,7 @@ export function Header({ children }: HeaderProps) {
         <HeaderContainer>
           <HeaderContent>
             <MainLogo onClick={() => handleScroll(0)}>
-              <Icon src={'./assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
+              <Icon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
               코딩바다
             </MainLogo>
             <MenuList>

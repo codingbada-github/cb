@@ -1,4 +1,4 @@
-import { postInquiryResponse } from '@api'
+import { PostInquiryResponse } from '@api'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -15,7 +15,7 @@ import confetti from 'canvas-confetti'
 export function InquiryReceivedPage() {
   useToastClear()
   const navigate = useNavigate()
-  const postInquiryResponse: postInquiryResponse = useRecoilValue(postInquiryResponseState)
+  const postInquiryResponse: PostInquiryResponse = useRecoilValue(postInquiryResponseState)
 
   const isMaxWidth600px = useMediaQuery('(max-width:600px)')
 
@@ -36,7 +36,7 @@ export function InquiryReceivedPage() {
       <ContainerContent>
         <LogoSection>
           <MainLogo>
-            <Icon src={'./assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
+            <Icon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
             코딩바다
           </MainLogo>
         </LogoSection>

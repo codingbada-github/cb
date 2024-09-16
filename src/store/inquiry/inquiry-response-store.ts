@@ -1,8 +1,8 @@
 import { atom } from 'recoil'
 
-import { postInquiryResponse } from '@api'
+import { PostInquiryResponse } from '@api'
 
-export const postInquiryResponseState = atom<postInquiryResponse>({
+export const postInquiryResponseState = atom<PostInquiryResponse>({
   key: 'postInquiryResponseState',
   default: {
     public_id: '',

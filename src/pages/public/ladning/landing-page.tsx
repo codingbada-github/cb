@@ -14,7 +14,7 @@ import { useToastClear } from '@hooks'
 import { isErrorToastOpenState, errorToastMessageState, postInquiryResponseState } from '@store'
 
 import { Footer } from '@components'
-import { RequestApi, postInquiryResponse } from '@api'
+import { RequestApi, PostInquiryResponse } from '@api'
 import { useNavigate } from 'react-router-dom'
 
 const reviewList2 = [
@@ -68,7 +68,7 @@ export function LandingPage() {
   const navigate = useNavigate()
   const setIsErrorToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isErrorToastOpenState)
   const setErrorToastMessage: SetterOrUpdater<string> = useSetRecoilState(errorToastMessageState)
-  const setPostInquiryResponse: SetterOrUpdater<postInquiryResponse> = useSetRecoilState(postInquiryResponseState)
+  const setPostInquiryResponse: SetterOrUpdater<PostInquiryResponse> = useSetRecoilState(postInquiryResponseState)
 
   const [phoneNumber, setPhoneNumber]: [string, Function] = useState('')
   const [content, setContent]: [string, Function] = useState('')
@@ -191,19 +191,19 @@ export function LandingPage() {
             </div>
             <LogoSection>
               <LogoDiv>
-                <Logo src={'./assets/landing/cj-logo.svg'} alt="cj" />
+                <Logo src={'/assets/landing/cj-logo.svg'} alt="cj" />
               </LogoDiv>
               <LogoDiv>
-                <Logo src={'./assets/landing/daangn-logo.svg'} alt="daangn" />
+                <Logo src={'/assets/landing/daangn-logo.svg'} alt="daangn" />
               </LogoDiv>
               <LogoDiv>
-                <Logo src={'./assets/landing/hyundai-logo.svg'} alt="hyundai" />
+                <Logo src={'/assets/landing/hyundai-logo.svg'} alt="hyundai" />
               </LogoDiv>
               <LogoDiv>
-                <Logo src={'./assets/landing/gs-logo.svg'} alt="gs" />
+                <Logo src={'/assets/landing/gs-logo.svg'} alt="gs" />
               </LogoDiv>
               <LogoDiv>
-                <Logo src={'./assets/landing/socar-logo.svg'} alt="socar" />
+                <Logo src={'/assets/landing/socar-logo.svg'} alt="socar" />
               </LogoDiv>
             </LogoSection>
           </div>

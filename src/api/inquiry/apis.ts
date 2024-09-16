@@ -1,15 +1,15 @@
 import { HttpMethod } from '@api/enums'
-import { postInquiryRequest, postInquiryResponse } from './schemas'
+import { PostInquiryRequest, PostInquiryResponse } from './schemas'
 import requestHandler from '@api/request-handler'
 
 const PATH = '/inquiry'
 
 export const inquiryApis = {
-  postInquiry: async (postInquiryRequest: postInquiryRequest) => {
-    return await requestHandler<postInquiryResponse>({
+  postInquiry: async (PostInquiryRequest: PostInquiryRequest) => {
+    return await requestHandler<PostInquiryResponse>({
       url: PATH,
       method: HttpMethod.POST,
-      data: postInquiryRequest,
+      data: PostInquiryRequest,
     })
   },
 }
