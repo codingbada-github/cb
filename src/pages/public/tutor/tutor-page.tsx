@@ -4,6 +4,7 @@ import { TextareaAutosize } from '@mui/base'
 import { useToastClear } from '@hooks'
 import { useEffect, useState } from 'react'
 import { GetTutorDetailResponse, RequestApi } from '@api'
+import { Helmet } from 'react-helmet-async'
 
 export function TutorIntroductionPage() {
   useToastClear()
@@ -33,6 +34,14 @@ export function TutorIntroductionPage() {
 
   return (
     <Container>
+      <Helmet>
+        <title>{`코딩바다 강사소개서 - ${tutor?.nickname} (${tutor?.korean_nickname})`}</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`코딩바다 강사소개서`} />
+        <meta property="og:description" content={`안녕하세요. 코딩바다의 ${tutor?.nickname} (${tutor?.korean_nickname})입니다.`} />
+        <meta property="og:image" content={tutor?.profile_image} />
+      </Helmet>
+
       <Content>
         <HeadLine>
           <MainLogo>
