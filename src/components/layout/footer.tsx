@@ -12,7 +12,7 @@ export function Footer() {
         <Icons>
           <Icon src={'/assets/landing/instagram-icon.svg'} alt="instagram-icon" />
           <Icon src={'/assets/landing/naver-blog-icon.svg'} alt="naver-blog-icon" />
-          <Icon src={'/assets/landing/tistory-icon.svg'} alt="tistory-icon" />
+          {/* <Icon src={'/assets/landing/tistory-icon.svg'} alt="tistory-icon" /> */}
         </Icons>
       </Content>
     </Container>
@@ -37,7 +37,7 @@ const Content = styled.div`
 `
 const Icons = styled.div`
   margin-top: 20px;
-  width: 100px;
+  width: 60px;
   display: flex;
   justify-content: space-between;
 `
