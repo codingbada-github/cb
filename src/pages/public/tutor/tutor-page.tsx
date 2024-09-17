@@ -73,23 +73,19 @@ export function TutorIntroductionPage() {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+
   display: flex;
   justify-content: center;
-
-  @media (max-width: 600px) {
-    height: auto;
-  }
 `
 
 const Content = styled.div`
-  padding: 60px 60px 0;
+  padding: 60px;
   width: 770px;
   height: 100%;
   background-color: #f8f9fa;
 
   @media (max-width: 600px) {
-    padding: 20px 30px 40px;
+    padding: 40px 30px;
     width: 100%;
     height: auto;
   }
