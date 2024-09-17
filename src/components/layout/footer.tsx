@@ -10,8 +10,14 @@ export function Footer() {
         <div>호스팅 사업자 : Amazon Web Services (AWS)</div>
 
         <Icons>
-          <Icon src={'/assets/landing/instagram-icon.svg'} alt="instagram-icon" />
-          <Icon src={'/assets/landing/naver-blog-icon.svg'} alt="naver-blog-icon" />
+          <IconLink href="https://blog.naver.com/codingbada" target="_blank">
+            <Icon src={'/assets/landing/naver-blog-icon.svg'} alt="naver-blog-icon" />
+          </IconLink>
+
+          <IconLink href="https://www.instagram.com/codingbada/" target="_blank">
+            <Icon src={'/assets/landing/instagram-icon.svg'} alt="instagram-icon" />
+          </IconLink>
+
           {/* <Icon src={'/assets/landing/tistory-icon.svg'} alt="tistory-icon" /> */}
         </Icons>
       </Content>
@@ -42,6 +48,9 @@ const Icons = styled.div`
   justify-content: space-between;
 `
 
+const IconLink = styled.a`
+  text-decoration: none;
+`
 const Icon = styled.img`
   width: 24px;
   height: 24px;
