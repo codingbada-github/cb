@@ -13,7 +13,7 @@ import InputMask from 'react-input-mask'
 import { useToastClear } from '@hooks'
 import { isErrorToastOpenState, errorToastMessageState, postInquiryResponseState } from '@store'
 
-import { Footer } from '@components'
+import { DebouncedButton, Footer } from '@components'
 import { RequestApi, PostInquiryResponse } from '@api'
 import { useNavigate } from 'react-router-dom'
 
@@ -139,9 +139,12 @@ export function LandingPage() {
                 />
               </CsFormField>
 
-              <Button onClick={() => handleCsButtonClick()} style={{ height: '50px', fontSize: '20px' }} variant="contained">
-                상담신청
-              </Button>
+              <DebouncedButton
+                onClick={() => handleCsButtonClick()}
+                sx={{ height: '50px', fontSize: '20px' }}
+                variant="contained"
+                text={'상담신청'}
+              />
             </CsForm>
           </FirstPageCsForm>
         </FirstPageContent>
@@ -294,9 +297,12 @@ export function LandingPage() {
                 <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
                   <TextField style={{ width: '300px', height: '55px', marginRight: '10px' }} type="tel" label="전화번호" variant="outlined" />
                 </InputMask>
-                <Button onClick={() => handleCsButtonClick(2)} style={{ height: '55px', fontSize: '20px' }} variant="contained">
-                  상담신청
-                </Button>
+                <DebouncedButton
+                  onClick={() => handleCsButtonClick(2)}
+                  sx={{ height: '55px', fontSize: '20px' }}
+                  variant="contained"
+                  text={'상담신청'}
+                />
               </CurriculumCsFormFields>
             </CurriculumCsForm>
           </CurriculumCsSection>

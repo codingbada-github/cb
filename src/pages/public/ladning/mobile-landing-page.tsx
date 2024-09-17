@@ -8,7 +8,7 @@ import { TextareaAutosize } from '@mui/base'
 import Marquee from 'react-marquee-slider'
 import InputMask from 'react-input-mask'
 
-import { Footer } from '@components'
+import { DebouncedButton, Footer } from '@components'
 import { useNavigate } from 'react-router-dom'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
 import { PostInquiryResponse, RequestApi } from '@api'
@@ -138,10 +138,12 @@ export function MobileLandingPage() {
                   placeholder="자녀의 나이 코딩, 코딩 경험 유무 등을 남겨주시면, 친절하고 상세하게 도와드리겠습니다."
                 />
               </CsFormField>
-
-              <Button onClick={() => handleCsButtonClick()} style={{ height: '50px', fontSize: '20px' }} variant="contained">
-                상담신청
-              </Button>
+              <DebouncedButton
+                onClick={() => handleCsButtonClick()}
+                sx={{ height: '50px', fontSize: '20px' }}
+                variant="contained"
+                text={'상담신청'}
+              />
             </CsForm>
           </FirstPageCsForm>
         </FirstPageContent>
@@ -298,9 +300,12 @@ export function MobileLandingPage() {
                 <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
                   <TextField style={{ width: '70%', height: '55px', marginRight: '10px' }} type="tel" label="전화번호" variant="outlined" />
                 </InputMask>
-                <Button onClick={() => handleCsButtonClick(2)} style={{ width: '30%', height: '55px', fontSize: '16px' }} variant="contained">
-                  상담신청
-                </Button>
+                <DebouncedButton
+                  onClick={() => handleCsButtonClick(2)}
+                  sx={{ width: '30%', height: '55px', fontSize: '16px' }}
+                  variant="contained"
+                  text={'상담신청'}
+                />
               </CurriculumCsFormFields>
             </CurriculumCsForm>
           </CurriculumCsSection>
