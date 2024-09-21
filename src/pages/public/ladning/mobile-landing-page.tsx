@@ -3,17 +3,16 @@ import styled from '@emotion/styled'
 import { keyframes } from '@emotion/react'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import { TextareaAutosize } from '@mui/base'
 import Marquee from 'react-marquee-slider'
 import InputMask from 'react-input-mask'
 
-import { DebouncedButton, Footer } from '@components'
+import { DebouncedButton, Footer, MobileFreeTestBottomSheet } from '@components'
 import { useNavigate } from 'react-router-dom'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
 import { PostInquiryResponse, RequestApi } from '@api'
 import { errorToastMessageState, isErrorToastOpenState, postInquiryResponseState } from '@store'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const reviewList2 = [
   {
@@ -63,6 +62,8 @@ const CONTENT_MAX_LENGTH: number = 1000
 
 export function MobileLandingPage() {
   useToastClear()
+  const inputFieldRef = useRef(null)
+
   const navigate = useNavigate()
   const setIsErrorToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isErrorToastOpenState)
   const setErrorToastMessage: SetterOrUpdater<string> = useSetRecoilState(errorToastMessageState)
@@ -124,11 +125,11 @@ export function MobileLandingPage() {
 
           <FirstPageCsForm>
             <CsForm>
-              <CsFormTitle>✅ 무료로 상담을 받아보세요!</CsFormTitle>
+              <CsFormTitle>✅ 지금 바로 상담을 받아보세요!</CsFormTitle>
 
               <CsFormField>
                 <InputMask value={phoneNumber} onChange={handlePhoneNumberChange} mask="999-9999-9999" maskPlaceholder={null}>
-                  <CsFormTextField type="tel" label="전화번호" variant="outlined" />
+                  <CsFormTextField inputRef={inputFieldRef} type="tel" label="전화번호" variant="outlined" />
                 </InputMask>
 
                 <TextArea
@@ -242,7 +243,7 @@ export function MobileLandingPage() {
               </CurriculumDescription>
 
               <CurriculumPriceDiscountSection>
-                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
                 <CurriculumOriginPrice>160,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
               <CurriculumPrice>120,000₩</CurriculumPrice>
@@ -264,7 +265,7 @@ export function MobileLandingPage() {
               </CurriculumDescription>
 
               <CurriculumPriceDiscountSection>
-                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
                 <CurriculumOriginPrice>180,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
               <CurriculumPrice>140,000₩</CurriculumPrice>
@@ -286,7 +287,7 @@ export function MobileLandingPage() {
               </CurriculumDescription>
 
               <CurriculumPriceDiscountSection>
-                <CurriculumPriceDiscountBadge>첫 달 할인 이벤트</CurriculumPriceDiscountBadge>
+                <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
                 <CurriculumOriginPrice>200,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
               <CurriculumPrice>160,000₩</CurriculumPrice>
@@ -386,6 +387,7 @@ export function MobileLandingPage() {
       </ReviewPageContainer>
 
       <Footer />
+      <MobileFreeTestBottomSheet ref={inputFieldRef} />
     </Container>
   )
 }
