@@ -19,7 +19,7 @@ export const FreeTestBottomSheet = forwardRef((props, ref: any) => {
   return (
     <Container>
       <Content>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '1280px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '1280px', cursor: 'pointer' }}>
           <CloseIcon onClick={() => setIsVisible(false)} style={{ fontSize: '35px', color: 'var(--gray-color)' }} />
 
           <Title>무료수업 이벤트 진행중!</Title>
