@@ -241,9 +241,9 @@ export function LandingPage() {
 
               <CurriculumPriceDiscountSection>
                 <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
-                <CurriculumOriginPrice>160,000₩</CurriculumOriginPrice>
+                <CurriculumOriginPrice>120,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
-              <CurriculumPrice>120,000₩</CurriculumPrice>
+              <CurriculumPrice>90,000₩</CurriculumPrice>
             </CurriculumDiv>
             <CurriculumDiv>
               <CurriculumTitle>
@@ -263,9 +263,9 @@ export function LandingPage() {
 
               <CurriculumPriceDiscountSection>
                 <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
-                <CurriculumOriginPrice>180,000₩</CurriculumOriginPrice>
+                <CurriculumOriginPrice>140,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
-              <CurriculumPrice>140,000₩</CurriculumPrice>
+              <CurriculumPrice>110,000₩</CurriculumPrice>
             </CurriculumDiv>
             <CurriculumDiv>
               <CurriculumTitle>
@@ -285,9 +285,9 @@ export function LandingPage() {
 
               <CurriculumPriceDiscountSection>
                 <CurriculumPriceDiscountBadge>첫 달 할인</CurriculumPriceDiscountBadge>
-                <CurriculumOriginPrice>200,000₩</CurriculumOriginPrice>
+                <CurriculumOriginPrice>160,000₩</CurriculumOriginPrice>
               </CurriculumPriceDiscountSection>
-              <CurriculumPrice>160,000₩</CurriculumPrice>
+              <CurriculumPrice>130,000₩</CurriculumPrice>
             </CurriculumDiv>
           </CurriculumSection>
 
