@@ -1,7 +1,10 @@
 import styled from '@emotion/styled'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { isMobileState } from '@store'
+import { Button } from '@mui/material'
+
+import Face2Icon from '@mui/icons-material/Face2'
 
 export interface Menu {
   name: string
@@ -46,6 +49,13 @@ export function Header({ children }: HeaderProps) {
               코딩바다
             </MobileMainLogo>
           </MobileHeaderContent>
+
+          <Link to="/parent-login">
+            <MobileParentLoginButton variant="outlined">
+              <Face2Icon style={{ paddingRight: '4px' }} />
+              학부모 로그인
+            </MobileParentLoginButton>
+          </Link>
         </MobileHeaderContainer>
 
         {children || <Outlet />}
@@ -56,19 +66,28 @@ export function Header({ children }: HeaderProps) {
       <>
         <HeaderContainer>
           <HeaderContent>
-            <MainLogo onClick={() => handleScroll(0)}>
-              <Icon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
-              코딩바다
-            </MainLogo>
-            <MenuList>
-              {HEADER_MENU.map((menu: Menu, index: number) => {
-                return (
-                  <MenuItem onClick={() => handleScroll(menu.top)} key={index}>
-                    {menu.name}
-                  </MenuItem>
-                )
-              })}
-            </MenuList>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <MainLogo onClick={() => handleScroll(0)}>
+                <Icon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
+                코딩바다
+              </MainLogo>
+              <MenuList>
+                {HEADER_MENU.map((menu: Menu, index: number) => {
+                  return (
+                    <MenuItem onClick={() => handleScroll(menu.top)} key={index}>
+                      {menu.name}
+                    </MenuItem>
+                  )
+                })}
+              </MenuList>
+            </div>
+
+            <Link to="/parent-login">
+              <ParentLoginButton variant="outlined">
+                <Face2Icon style={{ paddingRight: '7px' }} />
+                학부모 로그인
+              </ParentLoginButton>
+            </Link>
           </HeaderContent>
         </HeaderContainer>
 
@@ -128,6 +147,7 @@ const HeaderContainer = styled.div`
 const HeaderContent = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   width: 1200px;
 `
@@ -162,4 +182,15 @@ const Icon = styled.img`
   width: 60px;
 
   cursor: pointer;
+`
+
+const ParentLoginButton = styled(Button)`
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 4px;
+`
+
+const MobileParentLoginButton = styled(Button)`
+  font-weight: bold;
+  border-radius: 4px;
 `
