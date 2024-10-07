@@ -1,10 +1,11 @@
 import styled from '@emotion/styled'
 import { Outlet, Link } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { isMobileState } from '@store'
+import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from 'recoil'
+import { accountTokenState, isMobileState } from '@store'
 import { Button } from '@mui/material'
 
 import Face2Icon from '@mui/icons-material/Face2'
+import { LocalStorageKey } from '@api'
 
 export interface Menu {
   name: string
@@ -31,12 +32,19 @@ interface HeaderProps {
 
 export function Header({ children }: HeaderProps) {
   const isMobile: boolean = useRecoilValue(isMobileState)
+  const accountToken: string | null = useRecoilValue(accountTokenState)
+  const setAccountToken: SetterOrUpdater<string | null> = useSetRecoilState(accountTokenState)
 
   const handleScroll = (top: number) => {
     window.scrollTo({
       top: top,
       behavior: 'smooth',
     })
+  }
+
+  const handleLogoutClick = () => {
+    localStorage.removeItem(LocalStorageKey.ACCOUNT_TOKEN)
+    setAccountToken(null)
   }
 
   if (isMobile) {
@@ -50,12 +58,18 @@ export function Header({ children }: HeaderProps) {
             </MobileMainLogo>
           </MobileHeaderContent>
 
-          <Link to="/parent-login">
-            <MobileParentLoginButton variant="outlined">
-              <Face2Icon style={{ paddingRight: '4px' }} />
-              학부모 로그인
+          {accountToken ? (
+            <MobileParentLoginButton onClick={() => handleLogoutClick()} variant="outlined">
+              로그아웃
             </MobileParentLoginButton>
-          </Link>
+          ) : (
+            <Link to="/parent-login">
+              <MobileParentLoginButton variant="outlined">
+                <Face2Icon style={{ paddingRight: '4px' }} />
+                학부모 로그인
+              </MobileParentLoginButton>
+            </Link>
+          )}
         </MobileHeaderContainer>
 
         {children || <Outlet />}
@@ -71,23 +85,33 @@ export function Header({ children }: HeaderProps) {
                 <Icon src={'/assets/landing/codingbada-logo.png'} alt="codingbada-logo" />
                 코딩바다
               </MainLogo>
-              <MenuList>
-                {HEADER_MENU.map((menu: Menu, index: number) => {
-                  return (
-                    <MenuItem onClick={() => handleScroll(menu.top)} key={index}>
-                      {menu.name}
-                    </MenuItem>
-                  )
-                })}
-              </MenuList>
+              {accountToken ? (
+                <></>
+              ) : (
+                <MenuList>
+                  {HEADER_MENU.map((menu: Menu, index: number) => {
+                    return (
+                      <MenuItem onClick={() => handleScroll(menu.top)} key={index}>
+                        {menu.name}
+                      </MenuItem>
+                    )
+                  })}
+                </MenuList>
+              )}
             </div>
 
-            <Link to="/parent-login">
-              <ParentLoginButton variant="outlined">
-                <Face2Icon style={{ paddingRight: '7px' }} />
-                학부모 로그인
+            {accountToken ? (
+              <ParentLoginButton onClick={() => handleLogoutClick()} variant="outlined">
+                로그아웃
               </ParentLoginButton>
-            </Link>
+            ) : (
+              <Link to="/parent-login">
+                <ParentLoginButton variant="outlined">
+                  <Face2Icon style={{ paddingRight: '7px' }} />
+                  학부모 로그인
+                </ParentLoginButton>
+              </Link>
+            )}
           </HeaderContent>
         </HeaderContainer>
 

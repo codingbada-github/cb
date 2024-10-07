@@ -5,21 +5,25 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Face2Icon from '@mui/icons-material/Face2'
 import { useToastClear } from '@hooks'
 
-import { isErrorToastOpenState, errorToastMessageState, isMobileState } from '@store'
+import { isErrorToastOpenState, errorToastMessageState, isMobileState, accountTokenState } from '@store'
 import { useSetRecoilState, SetterOrUpdater, useRecoilValue } from 'recoil'
 
 import { DebouncedButton } from '@components'
 import { useState } from 'react'
+import { LocalStorageKey, RequestApi } from '@api'
+import { useNavigate } from 'react-router-dom'
 
 export function ParentLoginPage() {
   const isMobile: boolean = useRecoilValue(isMobileState)
   useToastClear()
+  const navigate = useNavigate()
   const setIsErrorToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isErrorToastOpenState)
   const setErrorToastMessage: SetterOrUpdater<string> = useSetRecoilState(errorToastMessageState)
+  const setAccountToken: SetterOrUpdater<string | null> = useSetRecoilState(accountTokenState)
 
   const [id, setId]: [string, Function] = useState('')
   const [password, setPassword]: [string, Function] = useState('')
-  const [isLoginSave, setIsLoginSave]: [boolean, Function] = useState(false)
+  const [isLoginSave, setIsLoginSave]: [boolean, Function] = useState(true)
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setId(event.target.value)
@@ -28,7 +32,7 @@ export function ParentLoginPage() {
     setPassword(event.target.value)
   }
   const handleIsLoginSaveChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoginSave(event.target.checked)
+    setIsLoginSave(true)
   }
 
   const handleLoginButtonClick = () => {
@@ -44,9 +48,25 @@ export function ParentLoginPage() {
       return
     }
 
-    setIsErrorToastOpen(true)
-    setErrorToastMessage('아이디 혹은 비밀번호를 확인해 주세요.')
-    return
+    ;(async () => {
+      try {
+        const response = await RequestApi.parent.postParentLogin({
+          phone_number: id,
+          password,
+        })
+
+        setId('')
+        setPassword('')
+
+        localStorage.setItem(LocalStorageKey.ACCOUNT_TOKEN, response.account_token)
+        setAccountToken(response.account_token)
+
+        navigate('/')
+      } catch (error: any) {
+        setIsErrorToastOpen(true)
+        setErrorToastMessage('아이디 혹은 비밀번호를 확인해 주세요!')
+      }
+    })()
   }
 
   if (isMobile) {
@@ -61,13 +81,22 @@ export function ParentLoginPage() {
 
         <Form>
           <TextField value={id} onChange={handleIdChange} style={{ width: '100%', height: '50px' }} label="아이디" variant="outlined" />
-          <TextField value={password} onChange={handlePasswordChange} style={{ width: '100%', height: '50px' }} label="비밀번호" variant="outlined" />
+          <TextField
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            style={{ width: '100%', height: '50px' }}
+            label="비밀번호"
+            variant="outlined"
+          />
         </Form>
 
         <ActionForm>
           <FormGroup style={{ width: '160px' }}>
             <FormControlLabel
-              control={<Checkbox value={isLoginSave} onChange={handleIsLoginSaveChange} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }} />}
+              control={
+                <Checkbox defaultChecked value={isLoginSave} onChange={handleIsLoginSaveChange} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }} />
+              }
               label="로그인 상태 유지"
             />
           </FormGroup>
@@ -103,7 +132,9 @@ export function ParentLoginPage() {
         <ActionForm>
           <FormGroup style={{ width: '160px' }}>
             <FormControlLabel
-              control={<Checkbox value={isLoginSave} onChange={handleIsLoginSaveChange} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }} />}
+              control={
+                <Checkbox defaultChecked value={isLoginSave} onChange={handleIsLoginSaveChange} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }} />
+              }
               label="로그인 상태 유지"
             />
           </FormGroup>
@@ -147,7 +178,6 @@ const MainLogo = styled.div`
 
   display: flex;
   align-items: center;
-  /* background-color: rebeccapurple; */
 `
 
 const Title = styled.div`
@@ -164,7 +194,6 @@ const Form = styled.div`
   margin-top: 30px;
   width: 100%;
   height: 120px;
-  /* background-color: beige; */
   display: flex;
   align-items: center;
   justify-content: space-between;

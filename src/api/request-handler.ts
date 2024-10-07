@@ -1,4 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { LocalStorageKey } from './enums'
+
+const getAccountTokenInLocalStorage = (): string | null => {
+  return localStorage.getItem(LocalStorageKey.ACCOUNT_TOKEN)
+}
 
 const instance: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -7,6 +12,12 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    const accountToken = getAccountTokenInLocalStorage()
+
+    if (accountToken) {
+      config.headers.Authorization = accountToken
+    }
+
     return config
   },
   (error) => {}

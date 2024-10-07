@@ -17,7 +17,7 @@ export function TutorIntroductionPage() {
     setIsLoading(true)
     ;(async () => {
       try {
-        const tutor = await RequestApi.tutor.getTutor(publicId as string)
+        const tutor = await RequestApi.tutor.getTutorDetail(publicId as string)
         setTutor(tutor)
         setIsLoading(false)
       } catch (error: any) {
