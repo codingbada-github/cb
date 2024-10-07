@@ -8,7 +8,7 @@ import { Card } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
 import { accountTokenState } from '@store'
-import Slider, { SliderThumb } from '@mui/material/Slider'
+import Slider from '@mui/material/Slider'
 
 export function ParentMainPage() {
   useToastClear()
@@ -39,100 +39,112 @@ export function ParentMainPage() {
 
   return (
     <Container>
-      <ParentGreeting>
-        <span style={{ marginRight: '5px', fontWeight: '500', fontSize: '20px' }}>안녕하세요,</span>
-        <span style={{ color: 'var(--main-color)', fontWeight: '500', fontSize: '20px' }}>{parentDetailResponse?.parent.name}</span>
-      </ParentGreeting>
+      <Content>
+        <ParentGreeting>
+          <span style={{ marginRight: '5px', fontWeight: '500', fontSize: '20px' }}>안녕하세요,</span>
+          <span style={{ color: 'var(--main-color)', fontWeight: '500', fontSize: '20px' }}>{parentDetailResponse?.parent.name}</span>
+        </ParentGreeting>
 
-      <ChildrenCard>
-        <ChildrenTopSection>
-          <ChildrenName>
-            {parentDetailResponse?.childrens[0].name} <ChildrenBadge>자녀</ChildrenBadge>
-          </ChildrenName>
+        <ChildrenCard>
+          <ChildrenTopSection>
+            <ChildrenName>
+              {parentDetailResponse?.childrens[0].name} <ChildrenBadge>자녀</ChildrenBadge>
+            </ChildrenName>
 
-          <ChildrenBirthYear>{parentDetailResponse?.childrens[0].birth_year}년생</ChildrenBirthYear>
-        </ChildrenTopSection>
+            <ChildrenBirthYear>{parentDetailResponse?.childrens[0].birth_year}년생</ChildrenBirthYear>
+          </ChildrenTopSection>
 
-        <ChildrenProfile>
-          {parentDetailResponse?.childrens[0].gender === GenderType.MALE ? (
-            <FaceIcon style={{ fontSize: '100px' }}></FaceIcon>
-          ) : (
-            <Face3Icon style={{ fontSize: '80px', paddingBottom: '10px' }} />
-          )}
-        </ChildrenProfile>
+          <ChildrenProfile>
+            {parentDetailResponse?.childrens[0].gender === GenderType.MALE ? (
+              <FaceIcon style={{ fontSize: '100px' }}></FaceIcon>
+            ) : (
+              <Face3Icon style={{ fontSize: '80px', paddingBottom: '10px' }} />
+            )}
+          </ChildrenProfile>
 
-        <ChildrenClassState>{parentDetailResponse?.childrens[0].course_state}</ChildrenClassState>
-        <ChildrenClassProgress>
-          {parentDetailResponse?.childrens[0].recent_course_done_week_count === 0
-            ? '첫 수업 준비를 하고 있어요.'
-            : `${parentDetailResponse?.childrens[0].recent_course_done_week_count}번의 수업을 받았어요.`}
-        </ChildrenClassProgress>
+          <ChildrenClassState>{parentDetailResponse?.childrens[0].course_state}</ChildrenClassState>
+          <ChildrenClassProgress>
+            {parentDetailResponse?.childrens[0].recent_course_done_week_count === 0
+              ? '첫 수업 준비를 하고 있어요.'
+              : `${parentDetailResponse?.childrens[0].recent_course_done_week_count}번의 수업을 받았어요.`}
+          </ChildrenClassProgress>
 
-        <ChildrenProgressbarSection>
-          <Slider
-            sx={{
-              '&.Mui-disabled': {
-                color: 'var(--main-color)',
-              },
-              '& .MuiSlider-thumb': {
-                height: 24,
-                width: 24,
-              },
-              '& .MuiSlider-rail': {
-                color: '#d8d8d8',
-                opacity: 1,
-                height: 3,
-              },
-            }}
-            defaultValue={parentDetailResponse?.childrens[0].recent_course_done_week_count}
-            step={1}
-            marks
-            max={parentDetailResponse?.childrens[0].recent_course_total_week_count}
-            disabled
-          />
-        </ChildrenProgressbarSection>
-      </ChildrenCard>
-
-      <SectionTitle>담당 강사 - {parentDetailResponse?.childrens[0].course_location}</SectionTitle>
-      <TutorCard>
-        <TutorProfile>
-          <ProfileImage src={parentDetailResponse?.childrens[0].tutor_profile_image} />
-        </TutorProfile>
-
-        <TutorDescription>
-          <TutorName>{parentDetailResponse?.childrens[0].tutor_name}</TutorName>
-          <TutorDetailButtonSection>
-            <TutorDetailButton
-              onClick={() => {
-                window.open(parentDetailResponse?.childrens[0].tutor_introduction_page_link, '_blank')
+          <ChildrenProgressbarSection>
+            <Slider
+              sx={{
+                '&.Mui-disabled': {
+                  color: 'var(--main-color)',
+                },
+                '& .MuiSlider-thumb': {
+                  height: 24,
+                  width: 24,
+                },
+                '& .MuiSlider-rail': {
+                  color: '#d8d8d8',
+                  opacity: 1,
+                  height: 3,
+                },
               }}
-            >
-              {'>'} 강사소개서 보러가기
-            </TutorDetailButton>
-          </TutorDetailButtonSection>
-        </TutorDescription>
-      </TutorCard>
+              defaultValue={parentDetailResponse?.childrens[0].recent_course_done_week_count}
+              step={1}
+              marks
+              max={parentDetailResponse?.childrens[0].recent_course_total_week_count}
+              disabled
+            />
+          </ChildrenProgressbarSection>
+        </ChildrenCard>
 
-      <SectionTitle>받은 수업</SectionTitle>
-      <SectionDescription>
-        자녀분의 수업 피드백을 확인하고 싶으시면,<br></br>아래의 수강하신 커리큘럼을 눌러주세요.
-      </SectionDescription>
+        <SectionTitle>담당 강사 - {parentDetailResponse?.childrens[0].course_location}</SectionTitle>
+        <TutorCard>
+          <TutorProfile>
+            <ProfileImage src={parentDetailResponse?.childrens[0].tutor_profile_image} />
+          </TutorProfile>
 
-      {parentDetailResponse?.childrens[0].courses.map((course: CourseListSchema, index: number) => (
-        <ClassCard key={`course-${index}`}>
-          <ClassImage src={course.thumbnail} />
-        </ClassCard>
-      ))}
+          <TutorDescription>
+            <TutorName>{parentDetailResponse?.childrens[0].tutor_name}</TutorName>
+            <TutorDetailButtonSection>
+              <TutorDetailButton
+                onClick={() => {
+                  window.open(parentDetailResponse?.childrens[0].tutor_introduction_page_link, '_blank')
+                }}
+              >
+                {'>'} 강사소개서 보러가기
+              </TutorDetailButton>
+            </TutorDetailButtonSection>
+          </TutorDescription>
+        </TutorCard>
+
+        <SectionTitle>받은 수업</SectionTitle>
+        <SectionDescription>
+          자녀분의 수업 피드백을 확인하고 싶으시면,<br></br>아래의 수강하신 커리큘럼을 눌러주세요.
+        </SectionDescription>
+
+        {parentDetailResponse?.childrens[0].courses.map((course: CourseListSchema, index: number) => (
+          <ClassCard key={`course-${index}`}>
+            <ClassImage src={course.thumbnail} />
+          </ClassCard>
+        ))}
+
+        <Copyright>Copyright © CodingBada All Rights Reserved.</Copyright>
+      </Content>
     </Container>
   )
 }
 
 const Container = styled.div`
+  display: flex;
+  justify-content: center;
   width: 100%;
   min-height: 100%;
   padding: 90px 30px 60px;
-
   background-color: #f8f9fa;
+
+  @media (min-width: 450px) {
+    padding-top: 110px;
+  }
+`
+const Content = styled.div`
+  max-width: 800px;
 `
 const ParentGreeting = styled.div`
   width: 100%;
@@ -280,9 +292,23 @@ const ClassCard = styled(Card)`
   margin-bottom: 30px;
   width: 100%;
   height: 33vw;
+
+  @media (min-width: 800px) {
+    height: 264px;
+  }
+  cursor: pointer;
 `
 const ClassImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`
+
+const Copyright = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #868e96;
+  padding: 20px 0 10px;
+
+  font-size: 12px;
 `
