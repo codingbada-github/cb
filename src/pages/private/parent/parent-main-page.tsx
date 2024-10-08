@@ -192,7 +192,7 @@ export function ParentMainPage() {
                   }
                 )
               ) : (
-                <ModalSectionDescription>첫 수업 이후 피드백이 작성 되어요.</ModalSectionDescription>
+                <ModalSectionDescription>첫 수업 이후 피드백이 작성되어요 :)</ModalSectionDescription>
               )}
             </ModalCoursFeedbackSection>
           </ModalScrollContainer>
@@ -391,6 +391,7 @@ const ModalContainer = styled(Paper)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  max-width: 700px;
   width: 90%;
   height: 70%;
   padding: 30px;
@@ -427,6 +428,10 @@ const ModalCourseCurriculum = styled.textarea`
   border-radius: 5px;
   padding: 10px 15px;
 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
   &:disabled {
     background-color: white;
     font-size: 16px;
@@ -459,6 +464,10 @@ const ModalCoursFeedbackTextareaAutosize = styled(TextareaAutosize)`
   outline: none;
   border: none;
   font-size: 16px;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:disabled {
     background-color: white;
