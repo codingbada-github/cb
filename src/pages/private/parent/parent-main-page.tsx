@@ -427,6 +427,7 @@ const ModalCourseCurriculum = styled.textarea`
   border: 1px var(--gray-color) solid;
   border-radius: 5px;
   padding: 10px 15px;
+  font-size: 16px;
 
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -434,9 +435,7 @@ const ModalCourseCurriculum = styled.textarea`
 
   &:disabled {
     background-color: white;
-    font-size: 16px;
     opacity: 1;
-    color: var(--gray-color);
   }
   resize: none;
 `
@@ -472,7 +471,6 @@ const ModalCoursFeedbackTextareaAutosize = styled(TextareaAutosize)`
   &:disabled {
     background-color: white;
     opacity: 1;
-    color: var(--gray-color);
   }
   resize: none;
 `
