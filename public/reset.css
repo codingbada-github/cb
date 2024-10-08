@@ -147,7 +147,8 @@ a {
 
 /* default style */
 div,
-span {
+span,
+textarea {
   font-family: 'Pretendard';
   font-weight: normal;
 }

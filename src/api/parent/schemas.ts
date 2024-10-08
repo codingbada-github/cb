@@ -13,12 +13,21 @@ export interface ParentDetailSchema {
   name: string
 }
 
-export interface CourseListSchema {
+export interface CourseDetailSchema {
   id: number
   name: string
   curriculum: string
   total_week_count: number
   thumbnail: string
+}
+export interface CourseFeedbackListSchema {
+  public_id: string
+  content: string
+}
+
+export interface CourseListSchema {
+  course: CourseDetailSchema
+  course_feedbacks: Array<CourseFeedbackListSchema>
 }
 
 export interface ChildrenListSchema {

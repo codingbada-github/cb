@@ -1,14 +1,21 @@
 import { useNavigate } from 'react-router-dom'
-import { CourseListSchema, GenderType, GetParentDetailResponse, LocalStorageKey, RequestApi } from '@api'
+import { CourseFeedbackListSchema, CourseListSchema, GenderType, GetParentDetailResponse, LocalStorageKey, RequestApi } from '@api'
 import styled from '@emotion/styled'
 import { useToastClear } from '@hooks'
 import Face3Icon from '@mui/icons-material/Face3'
 import FaceIcon from '@mui/icons-material/Face'
-import { Card } from '@mui/material'
+import { Card, Paper } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
 import { accountTokenState } from '@store'
 import Slider from '@mui/material/Slider'
+import Modal from '@mui/material/Modal'
+import CloseIcon from '@mui/icons-material/Close'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { TextareaAutosize } from '@mui/base'
 
 export function ParentMainPage() {
   useToastClear()
@@ -16,6 +23,9 @@ export function ParentMainPage() {
   const [isLoading, setIsLoading]: [boolean, Function] = useState(false)
   const [parentDetailResponse, setParentDetailResponse]: [GetParentDetailResponse | undefined, Function] = useState()
   const setAccountToken: SetterOrUpdater<string | null> = useSetRecoilState(accountTokenState)
+
+  const [isCourseModalOpen, setIsCourseModalOpen]: [boolean, Function] = useState(false)
+  const [courseIndex, setCourseIndex]: [number, Function] = useState(0)
 
   useEffect(() => {
     setIsLoading(true)
@@ -120,13 +130,74 @@ export function ParentMainPage() {
         </SectionDescription>
 
         {parentDetailResponse?.childrens[0].courses.map((course: CourseListSchema, index: number) => (
-          <ClassCard key={`course-${index}`}>
-            <ClassImage src={course.thumbnail} />
+          <ClassCard
+            key={`course-${index}`}
+            onClick={() => {
+              setCourseIndex(index)
+              setIsCourseModalOpen(true)
+            }}
+          >
+            <ClassImage src={course.course.thumbnail} />
           </ClassCard>
         ))}
 
         <Copyright>Copyright © CodingBada All Rights Reserved.</Copyright>
       </Content>
+
+      <Modal open={isCourseModalOpen} onClose={() => setIsCourseModalOpen(false)}>
+        <ModalContainer>
+          <ModalCourseTitleSection>
+            <ModalCourseTitle>{parentDetailResponse?.childrens[0].courses[courseIndex].course.name} 수업</ModalCourseTitle>
+            <CloseIcon
+              onClick={() => {
+                setIsCourseModalOpen(false)
+              }}
+              style={{ fontSize: '30px', color: 'var(--gray-color)' }}
+            />
+          </ModalCourseTitleSection>
+
+          <ModalCourseTitleDashBar />
+
+          <ModalScrollContainer>
+            <div style={{ display: 'flex' }}>
+              <div style={{ width: '50%', display: 'flex', flexDirection: 'column' }}>
+                <ModalSectionTitle>자녀 이름</ModalSectionTitle>
+                <ModalSectionDescription>{parentDetailResponse?.childrens[0].name}</ModalSectionDescription>
+              </div>
+              <div style={{ width: '50%', display: 'flex', flexDirection: 'column' }}>
+                <ModalSectionTitle>수업시수</ModalSectionTitle>
+                <ModalSectionDescription>
+                  총 {parentDetailResponse?.childrens[0].courses[courseIndex].course.total_week_count}주 과정
+                </ModalSectionDescription>
+              </div>
+            </div>
+
+            <ModalSectionTitle>커리큘럼</ModalSectionTitle>
+            <ModalCourseCurriculum disabled value={parentDetailResponse?.childrens[0].courses[courseIndex].course.curriculum} />
+
+            <ModalSectionTitle>수업 피드백</ModalSectionTitle>
+            <ModalCoursFeedbackSection>
+              {parentDetailResponse?.childrens[0].courses[courseIndex].course_feedbacks &&
+              parentDetailResponse?.childrens[0].courses[courseIndex].course_feedbacks.length > 0 ? (
+                parentDetailResponse?.childrens[0].courses[courseIndex].course_feedbacks.map(
+                  (courseFeedback: CourseFeedbackListSchema, index: number) => {
+                    return (
+                      <ModalCoursFeedbackAccodian key={`course-feedback-${index}`}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>{index + 1}번째 수업</AccordionSummary>
+                        <AccordionDetails>
+                          <ModalCoursFeedbackTextareaAutosize disabled value={courseFeedback.content} />
+                        </AccordionDetails>
+                      </ModalCoursFeedbackAccodian>
+                    )
+                  }
+                )
+              ) : (
+                <ModalSectionDescription>첫 수업 이후 피드백이 작성 되어요.</ModalSectionDescription>
+              )}
+            </ModalCoursFeedbackSection>
+          </ModalScrollContainer>
+        </ModalContainer>
+      </Modal>
     </Container>
   )
 }
@@ -144,6 +215,7 @@ const Container = styled.div`
   }
 `
 const Content = styled.div`
+  width: 100%;
   max-width: 800px;
 `
 const ParentGreeting = styled.div`
@@ -311,4 +383,85 @@ const Copyright = styled.div`
   padding: 20px 0 10px;
 
   font-size: 12px;
+`
+
+const ModalContainer = styled(Paper)`
+  outline: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 70%;
+  padding: 30px;
+`
+
+const ModalCourseTitleSection = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const ModalCourseTitle = styled.div`
+  font-weight: bold;
+  font-size: 23px;
+`
+
+const ModalCourseTitleDashBar = styled.div`
+  height: 10px;
+  border-bottom: 2px dashed var(--gray-color);
+  padding-bottom: 10px;
+`
+
+const ModalScrollContainer = styled.div`
+  height: calc(100% - 60px);
+
+  overflow: auto;
+`
+
+const ModalCourseCurriculum = styled.textarea`
+  min-height: 130px;
+  box-sizing: border-box;
+  width: 95%;
+  border: 1px var(--gray-color) solid;
+  border-radius: 5px;
+  padding: 10px 15px;
+
+  &:disabled {
+    background-color: white;
+    font-size: 16px;
+    color: var(--gray-color);
+  }
+  resize: none;
+`
+const ModalSectionTitle = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+  margin: 20px 0 5px;
+`
+const ModalSectionDescription = styled.div`
+  color: var(--gray-color);
+`
+
+const ModalCoursFeedbackSection = styled.div`
+  height: 30px;
+`
+const ModalCoursFeedbackAccodian = styled(Accordion)`
+  width: 95%;
+  border: 1px solid var(--gray-color);
+  box-shadow: none;
+  margin-bottom: 1px;
+`
+
+const ModalCoursFeedbackTextareaAutosize = styled(TextareaAutosize)`
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  &:disabled {
+    background-color: white;
+
+    color: var(--gray-color);
+  }
+  resize: none;
 `
