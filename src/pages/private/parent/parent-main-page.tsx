@@ -430,6 +430,7 @@ const ModalCourseCurriculum = styled.textarea`
   &:disabled {
     background-color: white;
     font-size: 16px;
+    opacity: 1;
     color: var(--gray-color);
   }
   resize: none;
@@ -458,6 +459,7 @@ const ModalCoursFeedbackTextareaAutosize = styled(TextareaAutosize)`
   outline: none;
   border: none;
   font-size: 16px;
+
   &:disabled {
     background-color: white;
     opacity: 1;
