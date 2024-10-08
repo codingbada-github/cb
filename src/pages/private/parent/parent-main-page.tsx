@@ -460,7 +460,7 @@ const ModalCoursFeedbackTextareaAutosize = styled(TextareaAutosize)`
   font-size: 16px;
   &:disabled {
     background-color: white;
-
+    opacity: 1;
     color: var(--gray-color);
   }
   resize: none;
