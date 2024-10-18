@@ -126,7 +126,7 @@ export function ParentLoginPage() {
 
         <Form>
           <TextField value={id} onChange={handleIdChange} style={{ width: '100%', height: '50px' }} label="아이디" variant="outlined" />
-          <TextField value={password} onChange={handlePasswordChange} style={{ width: '100%', height: '50px' }} label="비밀번호" variant="outlined" />
+          <TextField type="password" value={password} onChange={handlePasswordChange} style={{ width: '100%', height: '50px' }} label="비밀번호" variant="outlined" />
         </Form>
 
         <ActionForm>
