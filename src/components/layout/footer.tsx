@@ -18,6 +18,10 @@ export function Footer() {
             <Icon src={'/assets/landing/instagram-icon.svg'} alt="instagram-icon" />
           </IconLink>
 
+          <IconLink href="/tutor-login">
+            <Icon src={'/assets/landing/tutor-login-icon.svg'} alt="tutor-login-icon" />
+          </IconLink>
+
           {/* <Icon src={'/assets/landing/tistory-icon.svg'} alt="tistory-icon" /> */}
         </Icons>
       </Content>
@@ -43,7 +47,7 @@ const Content = styled.div`
 `
 const Icons = styled.div`
   margin-top: 20px;
-  width: 60px;
+  width: 87px;
   display: flex;
   justify-content: space-between;
 `
