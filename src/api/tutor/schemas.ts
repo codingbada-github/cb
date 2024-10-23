@@ -1,3 +1,5 @@
+import { CourseFeedbackListSchema } from '@api'
+
 export interface PostTutorLoginRequest {
   nickname: string
   password: string
@@ -60,4 +62,33 @@ export interface PatchTutorProfileRequest {  // 선택적 속성들을 가짐.
   university?: string
   activity?: string
   introduction?: string
+}
+
+export interface CourseInfoSchema {
+  name: string
+  curriculum: string
+  total_week_count: number
+  thumbnail: string
+}
+
+export interface GetTutorFeekbackResponse {
+  course: CourseInfoSchema
+  course_feedbacks: Array<CourseFeedbackListSchema>
+  is_in_progress: boolean
+}
+
+export interface PostTutorFeekbackRequest {
+  course_public_id: string
+  children_public_id: string
+  content: string
+}
+
+export interface PostTutorFeekbackResponse {
+  course_feedback: CourseFeedbackListSchema
+  is_in_progress: boolean
+}
+
+export interface PatchTutorFeekbackRequest {
+  course_feedback_public_id: string
+  content: string
 }

@@ -9,7 +9,7 @@ import { Card } from '@mui/material'
 import { useToastClear } from '@hooks'
 import { useEffect, useState } from 'react'
 import { SetterOrUpdater, useSetRecoilState } from 'recoil'
-import { isSuccessToastOpenState, successToastMessageState, accountTokenState } from '@store'
+import { isErrorToastOpenState, errorToastMessageState, isSuccessToastOpenState, successToastMessageState, accountTokenState } from '@store'
 
 interface ProfileItemProps {
   label: string
@@ -33,6 +33,8 @@ export function TutorMainPage() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading]: [boolean, Function] = useState(false)
   const [tutorStudentsResponse, setTutorStudentsResponse]: [GetTutorStudentsResponse | undefined, Function] = useState()
+  const setIsErrorToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isErrorToastOpenState)
+  const setErrorToastMessage: SetterOrUpdater<string> = useSetRecoilState(errorToastMessageState)
   const setIsSuccessToastOpen: SetterOrUpdater<boolean> = useSetRecoilState(isSuccessToastOpenState)
   const setSuccessToastMessage: SetterOrUpdater<string> = useSetRecoilState(successToastMessageState)
   const setAccountToken: SetterOrUpdater<string | null> = useSetRecoilState(accountTokenState)
@@ -50,17 +52,38 @@ export function TutorMainPage() {
     introduction: '',
   })
 
+  const navigateFeedback = (course_public_id: string, children_public_id: string, children_name: string) => {
+    navigate("/course/feedbacks", {
+      state: {
+        course_public_id,
+        children_public_id,
+        children_name
+      },
+    })
+  }
+
   const toggleContent = () => {
     setIsOpen(!isOpen)
   }
 
-  const navigateFeedback = () => {
-    navigate("");  // children_public_id & course_public_id 를 들고 피드백 페이지로 이동할 예정.
+  const handleResizeKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const textarea = event.target as HTMLTextAreaElement
+
+    if (textarea) {
+      var scrollLeft = window.scrollX
+      var scrollTop = window.scrollY
+
+      textarea.style.height = 'auto'
+      let height = textarea.scrollHeight
+      textarea.style.height = `${height + 8}px`
+
+      window.scrollTo(scrollLeft, scrollTop)
+    }
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) setImageData(file);
+    if (file) setImageData(file)
   }
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -71,7 +94,7 @@ export function TutorMainPage() {
     }))
   }
 
-  const submitProfileEdit = async () => {
+  const handleEditSubmit = async () => {
     ;(async () => {
       try {
         // 필드 변경여부 확인
@@ -114,10 +137,14 @@ export function TutorMainPage() {
             })
           }
 
-          setIsSuccessToastOpen(true)
-          setSuccessToastMessage('프로필 수정 성공!')
+          setTimeout(() => {
+            setIsSuccessToastOpen(true)
+            setSuccessToastMessage('프로필 수정 성공!')
+          }, 100)
         }
       } catch (error: any) {
+        setIsErrorToastOpen(true)
+        setErrorToastMessage('프로필 수정 실패!')
         console.log(error)
       }
     })()
@@ -154,6 +181,16 @@ export function TutorMainPage() {
       })
     }
   }, [tutorStudentsResponse])
+  
+  useEffect(() => {
+    if (isOpen) {
+      const textareas = document.querySelectorAll('.autoTextarea') as NodeListOf<HTMLTextAreaElement>  // 복수 개수
+      textareas.forEach(textarea => {
+        textarea.style.height = 'auto'
+        textarea.style.height = `${textarea.scrollHeight + 8}px`
+      })
+    }
+  }, [isOpen])
 
   if (isLoading) {
     return <>Loading...</>
@@ -215,12 +252,12 @@ export function TutorMainPage() {
                 <ProfileItem label="이메일" content={<input type="text" name="email" value={profileData.email} onChange={handleProfileChange} />} />
                 <ProfileItem label="전화번호" content={<input type="text" name="phone_number" value={profileData.phone_number} onChange={handleProfileChange} />} />
                 <ProfileItem label="주소" content={<input type="text" name="address" value={profileData.address} onChange={handleProfileChange} />} />
-                <ProfileItem label="학력사항" content={<textarea name="university" value={profileData.university} onChange={handleProfileChange} />} isEnter={true} />
-                <ProfileItem label="활동경력" content={<textarea name="activity" value={profileData.activity} onChange={handleProfileChange} />} isEnter={true} />
-                <ProfileItem label="자기소개" content={<textarea name="introduction" value={profileData.introduction} onChange={handleProfileChange} />} isEnter={true} />
+                <ProfileItem label="학력사항" content={<textarea className="autoTextarea" name="university" value={profileData.university} onChange={handleProfileChange} onKeyUp={handleResizeKeyUp} />} isEnter={true} />
+                <ProfileItem label="활동경력" content={<textarea className="autoTextarea" name="activity" value={profileData.activity} onChange={handleProfileChange} onKeyUp={handleResizeKeyUp} />} isEnter={true} />
+                <ProfileItem label="자기소개" content={<textarea className="autoTextarea" name="introduction" value={profileData.introduction} onChange={handleProfileChange} onKeyUp={handleResizeKeyUp} />} isEnter={true} />
               </ul>
               <ProfileToggleDivider style={{ marginTop: '15px', paddingBottom: '22px' }} />
-              <ProfileEditButton onClick={submitProfileEdit}>편집 저장</ProfileEditButton>
+              <ProfileEditButton onClick={handleEditSubmit}>편집 저장</ProfileEditButton>
             </ProfileToggleContent>
           </TutorCard>
 
@@ -250,7 +287,15 @@ export function TutorMainPage() {
                     <ChildrenBirthYear>{student.birth_year}년생</ChildrenBirthYear>
                     <ChildrenPhoneNumber>{student.phone_number || ''}</ChildrenPhoneNumber>
                     <ChildrenDetailButtonSection>
-                      <ChildrenDetailButton onClick={navigateFeedback}>{'>'} 피드백 작성</ChildrenDetailButton>
+                      <ChildrenDetailButton 
+                        onClick={() => navigateFeedback(
+                          student.recent_course.course_public_id, 
+                          student.children_public_id, 
+                          student.name
+                        )}
+                      >
+                        {'>'} 피드백 작성
+                      </ChildrenDetailButton>
                     </ChildrenDetailButtonSection>
                   </ChildrenDescription>
                 </ChildrenCard>
@@ -295,6 +340,7 @@ const MainContent = styled.div`
 const TutorGreeting = styled.div`
   width: 100%;
   margin-bottom: 20px;
+  margin-top: 5px;
 
   display: flex;
   justify-content: center;
@@ -338,6 +384,10 @@ const TutorViewDetail = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+
+  &:hover {
+    color: #333131;
+  }
 `
 
 const TutorProfile = styled.div`
@@ -382,9 +432,12 @@ const ProfileToggleButton = styled.div`
   color: #474646;
   cursor: pointer;
   padding-left: 16px;
-
   display: flex;
   align-items: center;
+
+  &:hover {
+    color: #100f0f;
+  }
 `
 const ProfileToggleContent = styled.div<{ isOpen: boolean }>`
   width: 100%;
@@ -412,7 +465,9 @@ const ProfileToggleContent = styled.div<{ isOpen: boolean }>`
     border: 1.5px solid black;
     border-radius: 4px;
     min-width: 220px;
-    min-height: 140px;
+    width: 100%;
+    resize: none;
+    box-sizing: border-box;
   }
 `
 const ProfileEditButton = styled.button`
@@ -423,6 +478,7 @@ const ProfileEditButton = styled.button`
   border-radius: 4px;
   padding: 3px 4px;
   cursor: pointer;
+
   &:hover {
     background-color: #0071a6;
   }
@@ -506,8 +562,13 @@ const ChildrenDetailButton = styled.div`
   display: flex;
   color: var(--gray-color);
   font-size: 13px;
+  font-weight: 460;
   justify-content: flex-end;
   cursor: pointer;
+
+  &:hover {
+    color: #100f0f;
+  }
 `
 
 const Copyright = styled.div`
