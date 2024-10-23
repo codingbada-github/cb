@@ -128,13 +128,13 @@ export function TutorFeedbackPage() {
         setIsCreate(false)
         setTimeout(() => {
           setIsSuccessToastOpen(true)
-          setSuccessToastMessage('피드백 생성 성공!')
+          setSuccessToastMessage('피드백이 작성되었어요.\n오늘 수업도 고생 많으셨습니다 :)')
         }, 100)
       } catch (error: any) {
         setIsCreate(false)
         setTimeout(() => {
           setIsErrorToastOpen(true)
-          setErrorToastMessage('피드백 생성 실패!')
+          setErrorToastMessage('피드백이 작성되지 않았어요.\n잠시 후 다시 시도해 주세요.')
         }, 100)
         console.log(error)
       }
@@ -177,13 +177,13 @@ export function TutorFeedbackPage() {
         setEditPublicId(null)
         setTimeout(() => {
           setIsSuccessToastOpen(true)
-          setSuccessToastMessage('피드백 수정 성공!')
+          setSuccessToastMessage('피드백이 수정되었어요.')
         }, 100)
       } catch (error: any) {
         setEditPublicId(null)
         setTimeout(() => {
           setIsErrorToastOpen(true)
-          setErrorToastMessage('피드백 수정 실패!')
+          setErrorToastMessage('피드백이 수정되지 않았어요.\n잠시 후 다시 시도해 주세요.')
         }, 100)
         console.log(error)
       }
@@ -582,6 +582,7 @@ const FeedbackInputBox = styled.textarea`
   border-radius: 4px;
   resize: none;
   box-sizing: border-box;
+  font-size: 16px;  // 모바일 줌인 방지 fontSize
 `
 const FeedbackCardNoneText = styled.div`
   width: 100%;

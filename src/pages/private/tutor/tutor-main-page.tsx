@@ -139,12 +139,12 @@ export function TutorMainPage() {
 
           setTimeout(() => {
             setIsSuccessToastOpen(true)
-            setSuccessToastMessage('프로필 수정 성공!')
+            setSuccessToastMessage('프로필이 수정되었어요.')
           }, 100)
         }
       } catch (error: any) {
         setIsErrorToastOpen(true)
-        setErrorToastMessage('프로필 수정 실패!')
+        setErrorToastMessage('프로필이 수정되지 않았어요.\n잠시 후 다시 시도해 주세요.')
         console.log(error)
       }
     })()
@@ -458,6 +458,7 @@ const ProfileToggleContent = styled.div<{ isOpen: boolean }>`
     padding: 2px 3px;
     border: 1.5px solid black;
     border-radius: 4px;
+    font-size: 16px;  // 모바일 줌인 방지 fontSize
   }
 
   textarea {
@@ -468,6 +469,7 @@ const ProfileToggleContent = styled.div<{ isOpen: boolean }>`
     width: 100%;
     resize: none;
     box-sizing: border-box;
+    font-size: 16px;  // 모바일 줌인 방지 fontSize
   }
 `
 const ProfileEditButton = styled.button`
